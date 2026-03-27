@@ -30,10 +30,7 @@ export default function Home() {
         <button class="btn btn-primary" onclick="showAddCardModal()" aria-label="Create new task">
           <span>➕</span> New Task
         </button>
-        <div class="auth-controls">
-          <button class="btn" id="authSignInBtn" onclick="openAuthModal()">Sign In</button>
-          <button class="btn" id="authSignOutBtn" onclick="signOut()" style="display:none">Sign Out</button>
-        </div>
+
       </div>
       <div class="header-utilities">
         <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme">
@@ -72,9 +69,6 @@ export default function Home() {
     </div>
 
     <main class="board-wrapper" aria-label="Kanban Board">
-      <div id="guestBanner" class="guest-banner" role="button" tabindex="0" aria-label="Using guest data — Learn about privacy and sync" style="display:none">
-        <span>Using guest data. ZenBoard encrypts your board with a passphrase on this device and in the cloud. Sign in to sync across devices.</span>
-      </div>
       <div class="board" id="board" aria-live="polite">
         <!-- Columns render here -->
       </div>
@@ -82,6 +76,8 @@ export default function Home() {
     <nav class="bottom-nav" id="bottomNav" aria-label="Quick navigation"></nav>
     <button class="fab-new" id="fabNewTask" onclick="showAddCardModal()" aria-label="New Task">➕</button>
   </div>
+
+  <!-- Auth Modal removed - using local storage only -->
 
   <!-- Modals & helpers (kept because client code expects them) -->
   <div class="modal" id="cardModal" aria-modal="true" role="dialog" aria-labelledby="modalTitle">
@@ -223,35 +219,6 @@ export default function Home() {
       </form>
     </div>
   </div>
-  
-    <script src="/js/config.js"></script>
-    <script type="module">
-      if (window.SUPABASE_CONFIG?.url && window.SUPABASE_CONFIG?.anonKey) {
-        const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2');
-        window.supabase = createClient(window.SUPABASE_CONFIG.url, window.SUPABASE_CONFIG.anonKey);
-      }
-    </script>
-    <script>
-      (function ensureRemoteInit() {
-        const opts = {
-          schema: (window.SUPABASE_CONFIG && window.SUPABASE_CONFIG.schema) || 'public',
-          table: (window.SUPABASE_CONFIG && window.SUPABASE_CONFIG.table) || 'boards'
-        };
-        const tryInit = () => {
-          if (window.supabase && window.RemoteStorage?.init) {
-            window.RemoteStorage.init(window.supabase, opts);
-            return true;
-          }
-          return false;
-        };
-        if (!tryInit()) {
-          let retries = 100; // ~5s
-          const id = setInterval(() => {
-            if (tryInit() || --retries <= 0) clearInterval(id);
-          }, 50);
-        }
-      })();
-    </script>
 
   `;
 

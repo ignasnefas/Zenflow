@@ -53,8 +53,6 @@
     init() {
       const afterLoad = () => {
         this.loadPrefs(); this.renderBoard(); this.attachEventListeners?.(); this.updateStats?.(); this.applyTheme?.(); this.updateFilterBadge?.(); this.updateBottomNavUI?.(); this.updateColumnSelectOptions?.();
-        setTimeout(() => { if ((window as any).RemoteStorage?.isReady?.()) (this as any).syncWithRemote?.().catch(()=>{}); }, 0);
-        try { const banner = document.getElementById('guestBanner'); if (banner) banner.style.display = ((window as any).RemoteStorage?.isLoggedIn?.()) ? 'none' : 'flex'; } catch {}
         const hdr = document.querySelector('header'); const stats = document.getElementById('statsBar'); const applyStatsVisibility = () => { const collapsed = hdr?.classList.contains('collapsed'); const stored = localStorage.getItem('ZenBoard_showStats'); const showUser = (stored === null) ? true : stored === 'true'; if (stats) stats.style.display = (showUser && !collapsed) ? 'grid' : 'none'; };
         applyStatsVisibility(); const origToggle = (window as any).toggleHeader; (window as any).toggleHeader = () => { origToggle(); setTimeout(applyStatsVisibility, 0); };
       };
